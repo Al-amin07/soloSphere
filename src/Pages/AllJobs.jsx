@@ -9,25 +9,32 @@ const AllJobs = () => {
   const axiosCommon = useAxiosCommon();
   const itemPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
-  const [filter, setFilter] = useState('')
-  const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState("");
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState('')
   const [totalItem, setTotalItem] = useState(0);
   const {
     data: jobs = [],
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["jobs", currentPage, filter],
+    queryKey: ["jobs", currentPage, filter, search, sort],
     queryFn: async () => {
       const { data } = await axiosCommon.get(
-        `all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}`
+        `all-jobs?page=${currentPage}&size=${itemPerPage}&filter=${filter}&search=${search}&sort=${sort}`
       );
       console.log(data);
       setTotalItem(data.count);
       return data.result;
     },
   });
-  console.log(filter)
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log(e.target.search.value)
+    setSearch(e.target.search.value)
+  }
+  console.log(filter);
   const totalPage = Math.ceil(totalItem / itemPerPage);
   const pages = [...Array(totalPage).keys()].map((i) => i + 1);
   return (
@@ -48,7 +55,7 @@ const AllJobs = () => {
             </select>
           </div>
 
-          <form>
+          <form onSubmit={handleSearch}>
             <div className="flex p-1 overflow-hidden border rounded-lg    focus-within:ring focus-within:ring-opacity-40 focus-within:border-blue-400 focus-within:ring-blue-300">
               <input
                 className="px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent"
@@ -67,6 +74,7 @@ const AllJobs = () => {
             <select
               name="category"
               id="category"
+              onChange={(e) => setSort(e.target.value)}
               className="border p-4 rounded-md"
             >
               <option value="">Sort By Deadline</option>
@@ -85,9 +93,10 @@ const AllJobs = () => {
 
       <div className="flex justify-center mt-12">
         <button
-        onClick={() => setCurrentPage(currentPage - 1)}
-        disabled={currentPage === 1}
-        className="px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white">
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 mx-1 text-gray-700 disabled:text-gray-500 capitalize bg-gray-200 rounded-md disabled:cursor-not-allowed disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:bg-blue-500  hover:text-white"
+        >
           <div className="flex items-center -mx-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -114,7 +123,7 @@ const AllJobs = () => {
             value={currentPage}
             onClick={() => setCurrentPage(btnNum)}
             className={`hidden px-4 py-2 mx-1 transition-colors duration-300 transform  rounded-md
-            ${currentPage === btnNum && 'bg-blue-500 text-white'}    
+            ${currentPage === btnNum && "bg-blue-500 text-white"}    
             sm:inline hover:bg-blue-500  hover:text-white`}
           >
             {btnNum}
@@ -122,9 +131,10 @@ const AllJobs = () => {
         ))}
 
         <button
-         onClick={() => setCurrentPage(currentPage + 1)}
-         disabled={currentPage === totalPage}
-        className="px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500">
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPage}
+          className="px-4 py-2 mx-1 text-gray-700 transition-colors duration-300 transform bg-gray-200 rounded-md hover:bg-blue-500 disabled:hover:bg-gray-200 disabled:hover:text-gray-500 hover:text-white disabled:cursor-not-allowed disabled:text-gray-500"
+        >
           <div className="flex items-center -mx-1">
             <span className="mx-1">Next</span>
 
