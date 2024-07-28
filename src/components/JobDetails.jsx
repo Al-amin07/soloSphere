@@ -24,12 +24,21 @@ const JobDetails = () => {
     const { mutateAsync } = useMutation({
         mutationFn: async (details) => {
             const { data } = await axiosCommon.post('/bids', details)
-            console.log(data)
+            // console.log(data)
+            return data
         },
-        onSuccess: () => {
-            toast.success('Bid Place Successfully!!!')
-            navigate('/')
-        }
+        onSuccess: (data) => {
+            if(data?.insertedId){
+                toast.success('Bid Place Successfully!!!')
+                navigate('/')
+            }
+            else{
+                toast.error('You Already Bid For This Job!!!')
+                
+            }
+           
+        },
+       
     })
 
 

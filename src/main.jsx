@@ -13,6 +13,7 @@ import Login from "./Authentication/Login.jsx";
 import Register from "./Authentication/Register.jsx";
 import AuthProvider from "./Provider/AuthProvider.jsx";
 import JobDetails from "./components/JobDetails.jsx";
+import AllJobs from "./Pages/AllJobs.jsx";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: '/jobs/:id',
         element: <JobDetails />
+      },
+      {
+        path: '/all-jobs',
+        element: <AllJobs />
       }
     ],
   },
