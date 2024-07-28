@@ -14,6 +14,7 @@ import Register from "./Authentication/Register.jsx";
 import AuthProvider from "./Provider/AuthProvider.jsx";
 import JobDetails from "./components/JobDetails.jsx";
 import AllJobs from "./Pages/AllJobs.jsx";
+import AddJob from "./Pages/AddJob.jsx";
 
 const queryClient = new QueryClient();
 
@@ -41,7 +42,12 @@ const router = createBrowserRouter([
       {
         path: '/all-jobs',
         element: <AllJobs />
+      },
+      {
+        path: '/add-job',
+        element: <AddJob />
       }
+     
     ],
   },
 ]);

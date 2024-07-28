@@ -11,7 +11,8 @@ const AllJobs = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState("");
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState('')
+  const [searchText, setSearchText] = useState('')
+  const [sort, setSort] = useState("");
   const [totalItem, setTotalItem] = useState(0);
   const {
     data: jobs = [],
@@ -31,9 +32,18 @@ const AllJobs = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(e.target.search.value)
-    setSearch(e.target.search.value)
-  }
+    console.log(e.target.search.value);
+    setSearch(e.target.search.value);
+  };
+
+  const handleReset = () => {
+    setCurrentPage(1);
+    setFilter("");
+    setSort("");
+    setSearch("");
+    setSearchText('')
+  };
+
   console.log(filter);
   const totalPage = Math.ceil(totalItem / itemPerPage);
   const pages = [...Array(totalPage).keys()].map((i) => i + 1);
@@ -46,6 +56,7 @@ const AllJobs = () => {
               name="category"
               onChange={(e) => setFilter(e.target.value)}
               id="category"
+              value={filter}
               className="border p-4 rounded-lg"
             >
               <option value="">Filter By Category</option>
@@ -60,6 +71,8 @@ const AllJobs = () => {
               <input
                 className="px-6 py-2 text-gray-700 placeholder-gray-500 bg-white outline-none focus:placeholder-transparent"
                 type="text"
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
                 name="search"
                 placeholder="Enter Job Title"
                 aria-label="Enter Job Title"
@@ -74,6 +87,7 @@ const AllJobs = () => {
             <select
               name="category"
               id="category"
+              value={sort}
               onChange={(e) => setSort(e.target.value)}
               className="border p-4 rounded-md"
             >
@@ -82,7 +96,9 @@ const AllJobs = () => {
               <option value="asc">Ascending Order</option>
             </select>
           </div>
-          <button className="btn">Reset</button>
+          <button onClick={handleReset} className="btn">
+            Reset
+          </button>
         </div>
         <div className="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {jobs.map((job) => (
